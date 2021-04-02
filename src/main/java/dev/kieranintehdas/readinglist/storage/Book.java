@@ -29,6 +29,7 @@ public class Book {
     @NotBlank
     private String author;
 
+    @ToString.Exclude
     @ManyToMany(mappedBy = "books")
     private Set<ReadingList> readingLists;
 

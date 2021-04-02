@@ -16,7 +16,7 @@ public class CreateReadingListRequest {
 
     Set<UUID> bookIds;
 
-    public Set<UUID> getBooks() {
+    public Set<UUID> getBookIds() {
         return Optional.ofNullable(bookIds)
                 .orElse(new HashSet<>());
     }

@@ -1,7 +1,7 @@
 package dev.kieranintehdas.readinglist.api;
 
+import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
 import dev.kieranintehdas.readinglist.storage.ReadingList;
@@ -42,11 +42,12 @@ public class ReadingListManager {
         return readingListRepository.findById(readingListId);
     }
 
-    public ReadingList modifyReadingList(
+    public ReadingList addBooksToReadingList(
             final UUID readingListToModifyId,
-            final ModifyReadingListRequest modifyReadingListRequest) {
+            final AddBooksToReadingListRequest addBooksToReadingListRequest
+    ) {
 
-        final ReadingList readingListToModify = getReadingListById(readingListToModifyId)
+        ReadingList readingListToModify = getReadingListById(readingListToModifyId)
                 .orElseThrow(
                         () -> new NotFoundException(
                                 readingListToModifyId.toString(),
@@ -54,8 +55,16 @@ public class ReadingListManager {
                         )
                 );
 
+        final Set<Book> existingBooksToAdd = StreamSupport.stream(
+                bookRepository.findAllById(addBooksToReadingListRequest.getBookIdsToAdd()).spliterator(),
+                false
+        ).collect(Collectors.toSet());
 
-        return readingListToModify;
+        readingListToModify.getBooks().addAll(existingBooksToAdd);
+        readingListToModify.getBooks().addAll(addBooksToReadingListRequest.getBooksToAdd());
+
+
+        return readingListRepository.save(readingListToModify);
     }
 
 }

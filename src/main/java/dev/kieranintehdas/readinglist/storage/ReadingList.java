@@ -23,6 +23,7 @@ public class ReadingList {
     @NotBlank
     private String name;
 
+    @ToString.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "reading_list_books",
