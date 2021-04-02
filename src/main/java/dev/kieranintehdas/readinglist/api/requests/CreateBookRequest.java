@@ -1,4 +1,4 @@
-package dev.kieranintehdas.readinglist;
+package dev.kieranintehdas.readinglist.api.requests;
 
 import lombok.Builder;
 import lombok.Value;

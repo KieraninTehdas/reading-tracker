@@ -1,5 +1,9 @@
 package dev.kieranintehdas.readinglist;
 
+import dev.kieranintehdas.readinglist.api.controllers.BookController;
+import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
+import dev.kieranintehdas.readinglist.storage.Book;
+import dev.kieranintehdas.readinglist.storage.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +19,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class BookApiTest {
+public class BookControllerTest {
 
     private BookController bookController;
     @Mock
