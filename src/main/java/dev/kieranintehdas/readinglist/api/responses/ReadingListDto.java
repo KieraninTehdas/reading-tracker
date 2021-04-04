@@ -11,29 +11,32 @@ import java.util.stream.Collectors;
 @Value
 public class ReadingListDto {
 
-    UUID id;
-    String name;
-    Set<AssociatedBook> associatedBooks;
+  UUID id;
+  String name;
+  Set<AssociatedBook> associatedBooks;
 
-    public ReadingListDto(UUID id, String name, Set<Book> associatedBooks) {
-        this.id = id;
-        this.name = name;
-        this.associatedBooks = associatedBooks.stream()
-                .map(book -> AssociatedBook.builder()
+  public ReadingListDto(UUID id, String name, Set<Book> associatedBooks) {
+    this.id = id;
+    this.name = name;
+    this.associatedBooks =
+        associatedBooks.stream()
+            .map(
+                book ->
+                    AssociatedBook.builder()
                         .id(book.getId())
                         .author(book.getAuthor())
                         .title(book.getTitle())
                         .build())
-                .collect(Collectors.toSet());
-    }
+            .collect(Collectors.toSet());
+  }
 
-    @Value
-    @Builder
-    static class AssociatedBook {
-        UUID id;
+  @Value
+  @Builder
+  static class AssociatedBook {
+    UUID id;
 
-        String title;
+    String title;
 
-        String author;
-    }
+    String author;
+  }
 }

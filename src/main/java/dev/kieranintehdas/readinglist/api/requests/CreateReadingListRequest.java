@@ -11,13 +11,11 @@ import java.util.UUID;
 @Value
 public class CreateReadingListRequest {
 
-    @NotBlank
-    String name;
+  @NotBlank String name;
 
-    Set<UUID> bookIds;
+  Set<UUID> bookIds;
 
-    public Set<UUID> getBookIds() {
-        return Optional.ofNullable(bookIds)
-                .orElse(new HashSet<>());
-    }
+  public Set<UUID> getBookIds() {
+    return Optional.ofNullable(bookIds).orElse(new HashSet<>());
+  }
 }

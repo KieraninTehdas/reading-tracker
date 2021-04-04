@@ -16,25 +16,26 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class BookController {
 
-    private final BookRepository bookRepository;
+  private final BookRepository bookRepository;
 
-    @PostMapping
-    public ResponseEntity<BookDto> createBook(@RequestBody @Valid final CreateBookRequest createBookRequest) {
-        final Book savedBook = bookRepository.save(
-                Book.builder()
+  @PostMapping
+  public ResponseEntity<BookDto> createBook(
+      @RequestBody @Valid final CreateBookRequest createBookRequest) {
+    final Book savedBook =
+        bookRepository.save(
+            Book.builder()
                 .title(createBookRequest.getTitle())
                 .author(createBookRequest.getAuthor())
-                .build()
-        );
+                .build());
 
-        return ResponseEntity.ok(savedBook.constructDto());
-    }
+    return ResponseEntity.ok(savedBook.constructDto());
+  }
 
-    @GetMapping("{bookId}")
-    public ResponseEntity<BookDto> getBookById(@PathVariable UUID bookId) {
-        return bookRepository.findById(bookId)
-                .map(book -> ResponseEntity.ok(book.constructDto()))
-                .orElse(ResponseEntity.notFound().build());
-    }
-
+  @GetMapping("{bookId}")
+  public ResponseEntity<BookDto> getBookById(@PathVariable UUID bookId) {
+    return bookRepository
+        .findById(bookId)
+        .map(book -> ResponseEntity.ok(book.constructDto()))
+        .orElse(ResponseEntity.notFound().build());
+  }
 }

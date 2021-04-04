@@ -17,42 +17,42 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class ReadingListController {
 
-    private final ReadingListManager readingListManager;
+  private final ReadingListManager readingListManager;
 
-    @PostMapping
-    public ResponseEntity<ReadingListDto> createReadingList(
-            @RequestBody @Valid final CreateReadingListRequest createReadingListRequest) {
+  @PostMapping
+  public ResponseEntity<ReadingListDto> createReadingList(
+      @RequestBody @Valid final CreateReadingListRequest createReadingListRequest) {
 
-        return ResponseEntity.ok(readingListManager.createReadingList(createReadingListRequest).constructDto());
-    }
+    return ResponseEntity.ok(
+        readingListManager.createReadingList(createReadingListRequest).constructDto());
+  }
 
-    @GetMapping("{readingListId}")
-    public ResponseEntity<ReadingListDto> getReadingListById(@PathVariable final UUID readingListId) {
-        return readingListManager.getReadingListById(readingListId)
-                .map(readingList -> ResponseEntity.ok(readingList.constructDto()))
-                .orElse(ResponseEntity.notFound().build());
-    }
+  @GetMapping("{readingListId}")
+  public ResponseEntity<ReadingListDto> getReadingListById(@PathVariable final UUID readingListId) {
+    return readingListManager
+        .getReadingListById(readingListId)
+        .map(readingList -> ResponseEntity.ok(readingList.constructDto()))
+        .orElse(ResponseEntity.notFound().build());
+  }
 
-    @PatchMapping("{readingListId}/add-books")
-    public ResponseEntity<ReadingListDto> addBooksToReadingList(
-            @PathVariable final UUID readingListId,
-            @RequestBody final AddBooksToReadingListRequest addBooksToReadingListRequest
-    ) {
+  @PatchMapping("{readingListId}/add-books")
+  public ResponseEntity<ReadingListDto> addBooksToReadingList(
+      @PathVariable final UUID readingListId,
+      @RequestBody final AddBooksToReadingListRequest addBooksToReadingListRequest) {
 
-        return ResponseEntity.ok(readingListManager.addBooksToReadingList(readingListId, addBooksToReadingListRequest).constructDto());
-    }
+    return ResponseEntity.ok(
+        readingListManager
+            .addBooksToReadingList(readingListId, addBooksToReadingListRequest)
+            .constructDto());
+  }
 
-    @PatchMapping("{readingListId}/remove-books")
-    public ResponseEntity<ReadingListDto> removeBooksFromReadingList(
-            @PathVariable final UUID readingListId,
-            @RequestBody final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest
-    ) {
-        return ResponseEntity.ok(
-                readingListManager.removeBooksFromReadingList(
-                        readingListId,
-                        removeBooksFromReadingListRequest
-                ).constructDto()
-        );
-    }
-
+  @PatchMapping("{readingListId}/remove-books")
+  public ResponseEntity<ReadingListDto> removeBooksFromReadingList(
+      @PathVariable final UUID readingListId,
+      @RequestBody final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest) {
+    return ResponseEntity.ok(
+        readingListManager
+            .removeBooksFromReadingList(readingListId, removeBooksFromReadingListRequest)
+            .constructDto());
+  }
 }

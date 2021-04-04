@@ -18,34 +18,26 @@ import java.util.UUID;
 @AllArgsConstructor
 public class Book {
 
-    @Id
-    @GeneratedValue
-    private UUID id;
+  @Id @GeneratedValue private UUID id;
 
-    @NonNull
-    @NotBlank
-    private String title;
+  @NonNull @NotBlank private String title;
 
-    @NonNull
-    @NotBlank
-    private String author;
+  @NonNull @NotBlank private String author;
 
-    @ToString.Exclude
-    @ManyToMany(mappedBy = "books")
-    private Set<ReadingList> readingLists;
+  @ToString.Exclude
+  @ManyToMany(mappedBy = "books")
+  private Set<ReadingList> readingLists;
 
-    public Set<ReadingList> getReadingLists() {
-        return Optional.ofNullable(readingLists)
-                .orElse(new HashSet<>());
-    }
+  public Set<ReadingList> getReadingLists() {
+    return Optional.ofNullable(readingLists).orElse(new HashSet<>());
+  }
 
-    public BookDto constructDto() {
-        return BookDto.builder()
-                .id(id)
-                .title(title)
-                .author(author)
-                .readingLists(getReadingLists())
-                .build();
-    }
-
+  public BookDto constructDto() {
+    return BookDto.builder()
+        .id(id)
+        .title(title)
+        .author(author)
+        .readingLists(getReadingLists())
+        .build();
+  }
 }

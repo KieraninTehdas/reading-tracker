@@ -9,9 +9,7 @@ import javax.validation.constraints.NotBlank;
 @Builder
 public class CreateBookRequest {
 
-    @NotBlank
-    String title;
+  @NotBlank String title;
 
-    @NotBlank
-    String author;
+  @NotBlank String author;
 }

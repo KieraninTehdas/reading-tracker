@@ -10,13 +10,13 @@ import java.util.UUID;
 @Value
 public class RemoveBooksFromReadingListRequest {
 
-    Set<UUID> bookIds;
+  Set<UUID> bookIds;
 
-    public RemoveBooksFromReadingListRequest() {
-        this.bookIds = Collections.emptySet();
-    }
+  public RemoveBooksFromReadingListRequest() {
+    this.bookIds = Collections.emptySet();
+  }
 
-    public RemoveBooksFromReadingListRequest(Set<UUID> bookIds) {
-        this.bookIds = Optional.ofNullable(bookIds).orElse(Collections.emptySet());
-    }
+  public RemoveBooksFromReadingListRequest(Set<UUID> bookIds) {
+    this.bookIds = Optional.ofNullable(bookIds).orElse(Collections.emptySet());
+  }
 }

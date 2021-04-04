@@ -7,13 +7,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 @Configuration
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .mvcMatchers("/books*")
-                .permitAll();
+  @Override
+  protected void configure(HttpSecurity http) throws Exception {
+    http.authorizeRequests().mvcMatchers("*").permitAll();
 
-        http.csrf().disable();
-
-    }
+    http.csrf().disable();
+  }
 }
