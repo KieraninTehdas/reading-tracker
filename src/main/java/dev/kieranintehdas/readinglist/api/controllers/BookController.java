@@ -1,6 +1,7 @@
 package dev.kieranintehdas.readinglist.api.controllers;
 
 import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
+import dev.kieranintehdas.readinglist.api.responses.BookDto;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,7 @@ public class BookController {
     private final BookRepository bookRepository;
 
     @PostMapping
-    public ResponseEntity<Book> createBook(@RequestBody @Valid final CreateBookRequest createBookRequest) {
+    public ResponseEntity<BookDto> createBook(@RequestBody @Valid final CreateBookRequest createBookRequest) {
         final Book savedBook = bookRepository.save(
                 Book.builder()
                 .title(createBookRequest.getTitle())
@@ -26,13 +27,13 @@ public class BookController {
                 .build()
         );
 
-        return ResponseEntity.ok(savedBook);
+        return ResponseEntity.ok(savedBook.constructDto());
     }
 
     @GetMapping("{bookId}")
-    public ResponseEntity<Book> getBookById(@PathVariable UUID bookId) {
+    public ResponseEntity<BookDto> getBookById(@PathVariable UUID bookId) {
         return bookRepository.findById(bookId)
-                .map(ResponseEntity::ok)
+                .map(book -> ResponseEntity.ok(book.constructDto()))
                 .orElse(ResponseEntity.notFound().build());
     }
 

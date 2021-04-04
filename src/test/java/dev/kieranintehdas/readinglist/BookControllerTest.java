@@ -2,6 +2,7 @@ package dev.kieranintehdas.readinglist;
 
 import dev.kieranintehdas.readinglist.api.controllers.BookController;
 import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
+import dev.kieranintehdas.readinglist.api.responses.BookDto;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +12,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
+import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -51,15 +53,16 @@ public class BookControllerTest {
                             .build();
                 }
         );
-        final ResponseEntity<Book> expectedResult = ResponseEntity.ok(
-                Book.builder()
+        final ResponseEntity<BookDto> expectedResult = ResponseEntity.ok(
+                BookDto.builder()
                 .author(author)
                 .id(id)
                 .title(title)
+                        .readingLists(Collections.emptySet())
                 .build()
         );
 
-        final ResponseEntity<Book> result = bookController.createBook(
+        final ResponseEntity<BookDto> result = bookController.createBook(
                 CreateBookRequest.builder()
                 .title(title)
                 .author(author)
@@ -73,7 +76,7 @@ public class BookControllerTest {
     public void getBookById() {
         when(bookRepository.findById(any())).thenReturn(Optional.of(book));
 
-        final ResponseEntity<Book> result = bookController.getBookById(id);
+        final ResponseEntity<BookDto> result = bookController.getBookById(id);
 
         assertEquals(ResponseEntity.ok(book), result);
     }
@@ -82,7 +85,7 @@ public class BookControllerTest {
     public void getBookById_whenNotFound() {
         when(bookRepository.findById(any())).thenReturn(Optional.empty());
 
-        final ResponseEntity<Book> result = bookController.getBookById(id);
+        final ResponseEntity<BookDto> result = bookController.getBookById(id);
 
         assertEquals(ResponseEntity.notFound().build(), result);
     }

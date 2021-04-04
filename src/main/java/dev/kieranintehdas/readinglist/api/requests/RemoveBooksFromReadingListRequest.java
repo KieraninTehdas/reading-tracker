@@ -1,6 +1,5 @@
 package dev.kieranintehdas.readinglist.api.requests;
 
-import dev.kieranintehdas.readinglist.storage.Book;
 import lombok.Value;
 
 import java.util.Collections;
@@ -9,15 +8,15 @@ import java.util.Set;
 import java.util.UUID;
 
 @Value
-public class AddBooksToReadingListRequest {
+public class RemoveBooksFromReadingListRequest {
 
     Set<UUID> bookIds;
 
-    Set<Book> books;
-
-    public AddBooksToReadingListRequest(Set<UUID> bookIds, Set<Book> books) {
-        this.bookIds = Optional.ofNullable(bookIds).orElse(Collections.emptySet());
-        this.books = Optional.ofNullable(books).orElse(Collections.emptySet());
+    public RemoveBooksFromReadingListRequest() {
+        this.bookIds = Collections.emptySet();
     }
 
+    public RemoveBooksFromReadingListRequest(Set<UUID> bookIds) {
+        this.bookIds = Optional.ofNullable(bookIds).orElse(Collections.emptySet());
+    }
 }

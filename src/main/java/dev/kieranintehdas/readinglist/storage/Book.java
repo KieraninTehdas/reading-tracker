@@ -1,5 +1,6 @@
 package dev.kieranintehdas.readinglist.storage;
 
+import dev.kieranintehdas.readinglist.api.responses.BookDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,4 +38,14 @@ public class Book {
         return Optional.ofNullable(readingLists)
                 .orElse(new HashSet<>());
     }
+
+    public BookDto constructDto() {
+        return BookDto.builder()
+                .id(id)
+                .title(title)
+                .author(author)
+                .readingLists(getReadingLists())
+                .build();
+    }
+
 }

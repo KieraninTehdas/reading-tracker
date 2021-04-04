@@ -37,25 +37,4 @@ class ReadingListControllerTest {
         controller = new ReadingListController(readingListManagerMock);
     }
 
-    @Test
-    void createReadingList() {
-        when(readingListManagerMock.createReadingList(any())).thenReturn(readingList);
-
-        final ResponseEntity<ReadingList> result = controller.createReadingList(
-                new CreateReadingListRequest(readingListName, null)
-        );
-
-        assertEquals(ResponseEntity.ok(readingList), result);
-    }
-
-    @Test
-    void addBooksToReadingList() {
-        when(readingListManagerMock.modifyReadingList(any(), any())).thenReturn(readingList);
-
-        final ResponseEntity<ReadingList> result = controller.modifyReadingList(
-                UUID.randomUUID(), new AddBooksToReadingListRequest(null, null, null, null)
-        );
-
-        assertEquals(ResponseEntity.ok(readingList), result);
-    }
 }

@@ -1,5 +1,6 @@
 package dev.kieranintehdas.readinglist.storage;
 
+import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -24,6 +25,7 @@ public class ReadingList {
     private String name;
 
     @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
             name = "reading_list_books",
@@ -31,5 +33,9 @@ public class ReadingList {
             inverseJoinColumns = {@JoinColumn(name = "book_id")}
     )
     private Set<Book> books;
+
+    public ReadingListDto constructDto() {
+        return new ReadingListDto(id, name, books);
+    }
 
 }

@@ -2,6 +2,7 @@ package dev.kieranintehdas.readinglist.api;
 
 import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
+import dev.kieranintehdas.readinglist.api.requests.RemoveBooksFromReadingListRequest;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
 import dev.kieranintehdas.readinglist.storage.ReadingList;
@@ -56,13 +57,35 @@ public class ReadingListManager {
                 );
 
         final Set<Book> existingBooksToAdd = StreamSupport.stream(
-                bookRepository.findAllById(addBooksToReadingListRequest.getBookIdsToAdd()).spliterator(),
+                bookRepository.findAllById(addBooksToReadingListRequest.getBookIds()).spliterator(),
                 false
         ).collect(Collectors.toSet());
 
         readingListToModify.getBooks().addAll(existingBooksToAdd);
-        readingListToModify.getBooks().addAll(addBooksToReadingListRequest.getBooksToAdd());
+        readingListToModify.getBooks().addAll(addBooksToReadingListRequest.getBooks());
 
+
+        return readingListRepository.save(readingListToModify);
+    }
+
+    public ReadingList removeBooksFromReadingList(
+            final UUID readingListToModifyId,
+            final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest
+    ) {
+
+        ReadingList readingListToModify = getReadingListById(readingListToModifyId)
+                .orElseThrow(
+                        () -> new NotFoundException(
+                                readingListToModifyId.toString(),
+                                ReadingList.class
+                        )
+                );
+
+        final Set<Book> booksToRemove = readingListToModify.getBooks().stream()
+                .filter(book -> removeBooksFromReadingListRequest.getBookIds().contains(book.getId()))
+                .collect(Collectors.toSet());
+
+        readingListToModify.getBooks().removeAll(booksToRemove);
 
         return readingListRepository.save(readingListToModify);
     }

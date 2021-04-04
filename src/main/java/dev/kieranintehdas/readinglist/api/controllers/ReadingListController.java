@@ -1,9 +1,10 @@
 package dev.kieranintehdas.readinglist.api.controllers;
 
 import dev.kieranintehdas.readinglist.api.ReadingListManager;
-import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
-import dev.kieranintehdas.readinglist.storage.ReadingList;
+import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
+import dev.kieranintehdas.readinglist.api.requests.RemoveBooksFromReadingListRequest;
+import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -19,18 +20,39 @@ public class ReadingListController {
     private final ReadingListManager readingListManager;
 
     @PostMapping
-    public ResponseEntity<ReadingList> createReadingList(
+    public ResponseEntity<ReadingListDto> createReadingList(
             @RequestBody @Valid final CreateReadingListRequest createReadingListRequest) {
 
-        return ResponseEntity.ok(readingListManager.createReadingList(createReadingListRequest));
+        return ResponseEntity.ok(readingListManager.createReadingList(createReadingListRequest).constructDto());
+    }
+
+    @GetMapping("{readingListId}")
+    public ResponseEntity<ReadingListDto> getReadingListById(@PathVariable final UUID readingListId) {
+        return readingListManager.getReadingListById(readingListId)
+                .map(readingList -> ResponseEntity.ok(readingList.constructDto()))
+                .orElse(ResponseEntity.notFound().build());
     }
 
     @PatchMapping("{readingListId}/add-books")
-    public ResponseEntity<ReadingList> addBooksToReadingList(
+    public ResponseEntity<ReadingListDto> addBooksToReadingList(
             @PathVariable final UUID readingListId,
-            @RequestBody final AddBooksToReadingListRequest addBooksToReadingListRequest) {
+            @RequestBody final AddBooksToReadingListRequest addBooksToReadingListRequest
+    ) {
 
-        return ResponseEntity.ok(readingListManager.addBooksToReadingList(readingListId,addBooksToReadingListRequest));
+        return ResponseEntity.ok(readingListManager.addBooksToReadingList(readingListId, addBooksToReadingListRequest).constructDto());
+    }
+
+    @PatchMapping("{readingListId}/remove-books")
+    public ResponseEntity<ReadingListDto> removeBooksFromReadingList(
+            @PathVariable final UUID readingListId,
+            @RequestBody final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest
+    ) {
+        return ResponseEntity.ok(
+                readingListManager.removeBooksFromReadingList(
+                        readingListId,
+                        removeBooksFromReadingListRequest
+                ).constructDto()
+        );
     }
 
 }
