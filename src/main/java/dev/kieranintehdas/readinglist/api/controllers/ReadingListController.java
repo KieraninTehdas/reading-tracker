@@ -1,9 +1,8 @@
 package dev.kieranintehdas.readinglist.api.controllers;
 
 import dev.kieranintehdas.readinglist.api.ReadingListManager;
-import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.RemoveBooksFromReadingListRequest;
+import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
 import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -35,24 +34,14 @@ public class ReadingListController {
         .orElse(ResponseEntity.notFound().build());
   }
 
-  @PatchMapping("{readingListId}/add-books")
-  public ResponseEntity<ReadingListDto> addBooksToReadingList(
+  @PatchMapping("{readingListId}/modify")
+  public ResponseEntity<ReadingListDto> modifyReadingList(
       @PathVariable final UUID readingListId,
-      @RequestBody final AddBooksToReadingListRequest addBooksToReadingListRequest) {
+      @RequestBody final ModifyReadingListRequest modifyReadingListRequest) {
 
     return ResponseEntity.ok(
         readingListManager
-            .addBooksToReadingList(readingListId, addBooksToReadingListRequest)
-            .constructDto());
-  }
-
-  @PatchMapping("{readingListId}/remove-books")
-  public ResponseEntity<ReadingListDto> removeBooksFromReadingList(
-      @PathVariable final UUID readingListId,
-      @RequestBody final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest) {
-    return ResponseEntity.ok(
-        readingListManager
-            .removeBooksFromReadingList(readingListId, removeBooksFromReadingListRequest)
+            .modifyReadingList(readingListId, modifyReadingListRequest)
             .constructDto());
   }
 }

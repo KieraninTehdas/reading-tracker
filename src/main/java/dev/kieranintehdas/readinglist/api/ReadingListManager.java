@@ -1,21 +1,19 @@
 package dev.kieranintehdas.readinglist.api;
 
-import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.RemoveBooksFromReadingListRequest;
+import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
 import dev.kieranintehdas.readinglist.storage.ReadingList;
 import dev.kieranintehdas.readinglist.storage.ReadingListRepository;
-import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
-
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.StreamSupport;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
 @Slf4j
 @Component
@@ -26,11 +24,7 @@ public class ReadingListManager {
   private final ReadingListRepository readingListRepository;
 
   public ReadingList createReadingList(final CreateReadingListRequest createReadingListRequest) {
-    final Set<Book> booksToAddToList =
-        StreamSupport.stream(
-                bookRepository.findAllById(createReadingListRequest.getBookIds()).spliterator(),
-                false)
-            .collect(Collectors.toSet());
+    final Set<Book> booksToAddToList = getBooksById(createReadingListRequest.getBookIds());
 
     return readingListRepository.save(
         ReadingList.builder()
@@ -43,42 +37,30 @@ public class ReadingListManager {
     return readingListRepository.findById(readingListId);
   }
 
-  public ReadingList addBooksToReadingList(
-      final UUID readingListToModifyId,
-      final AddBooksToReadingListRequest addBooksToReadingListRequest) {
-
+  public ReadingList modifyReadingList(
+      final UUID readingListToModifyId, final ModifyReadingListRequest modifyReadingListRequest) {
     ReadingList readingListToModify =
         getReadingListById(readingListToModifyId)
             .orElseThrow(
                 () -> new NotFoundException(readingListToModifyId.toString(), ReadingList.class));
 
-    final Set<Book> existingBooksToAdd =
-        StreamSupport.stream(
-                bookRepository.findAllById(addBooksToReadingListRequest.getBookIds()).spliterator(),
-                false)
-            .collect(Collectors.toSet());
+    // Might be worth doing something to ignore any books that are being both added and removed?
+    final Set<Book> booksToAdd = getBooksById(modifyReadingListRequest.getIdsOfBooksToAdd());
 
-    readingListToModify.getBooks().addAll(existingBooksToAdd);
-
-    return readingListRepository.save(readingListToModify);
-  }
-
-  public ReadingList removeBooksFromReadingList(
-      final UUID readingListToModifyId,
-      final RemoveBooksFromReadingListRequest removeBooksFromReadingListRequest) {
-
-    ReadingList readingListToModify =
-        getReadingListById(readingListToModifyId)
-            .orElseThrow(
-                () -> new NotFoundException(readingListToModifyId.toString(), ReadingList.class));
-
-    final Set<Book> booksToRemove =
-        readingListToModify.getBooks().stream()
-            .filter(book -> removeBooksFromReadingListRequest.getBookIds().contains(book.getId()))
-            .collect(Collectors.toSet());
-
-    readingListToModify.getBooks().removeAll(booksToRemove);
+    readingListToModify.addBooksToReadingList(booksToAdd);
+    readingListToModify.removeBooksFromReadingList(
+        modifyReadingListRequest.getIdsOfBooksToRemove());
 
     return readingListRepository.save(readingListToModify);
   }
+
+  private Set<Book> getBooksById(final Set<UUID> bookIds) {
+    return StreamSupport.stream(
+            bookRepository
+                .findAllById(bookIds)
+                .spliterator(),
+            false)
+        .collect(Collectors.toSet());
+  }
+
 }

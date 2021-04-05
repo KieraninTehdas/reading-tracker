@@ -8,8 +8,8 @@ import static org.mockito.Mockito.when;
 
 import dev.kieranintehdas.readinglist.api.NotFoundException;
 import dev.kieranintehdas.readinglist.api.ReadingListManager;
-import dev.kieranintehdas.readinglist.api.requests.AddBooksToReadingListRequest;
 import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
+import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
 import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
@@ -49,8 +49,8 @@ class ReadingListEndpointsTest {
     return Book.builder().title(title).author(author).build();
   }
 
-  private ReadingList createReadingList(String name, Collection<Book> books) {
-    return ReadingList.builder().name(name).books(new HashSet<>(books)).build();
+  private ReadingList createReadingList(Collection<Book> books) {
+    return ReadingList.builder().name("My Reading List").books(new HashSet<>(books)).build();
   }
 
   @Test
@@ -83,54 +83,8 @@ class ReadingListEndpointsTest {
   }
 
   @Test
-  void addBooksToReadingList() {
-    final Book bookAlreadyInList = createBook("Already In", "The List");
-    final Book addedBook = createBook("Added", "By Id");
-    final ReadingList readingList =
-        createReadingList(readingListName, Collections.singleton(bookAlreadyInList));
-    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.of(readingList));
-    when(readingListRepositoryMock.save(any())).thenAnswer(returnsFirstArg());
-    when(bookRepositoryMock.findAllById(any())).thenReturn(Collections.singletonList(addedBook));
-    final ReadingList expectedReadingList =
-        createReadingList(readingListName, Arrays.asList(bookAlreadyInList, addedBook));
-
-    final ResponseEntity<ReadingListDto> result =
-        controller.addBooksToReadingList(
-            UUID.randomUUID(),
-            new AddBooksToReadingListRequest(Collections.singleton(UUID.randomUUID())));
-
-    assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
+  void modifyReadingList() {
+    
   }
-
-  @Test
-  void addBooksToReadingList_whenReadingListNotFound() {
-    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.empty());
-
-    assertThrows(
-        NotFoundException.class,
-        () ->
-            controller.addBooksToReadingList(
-                UUID.randomUUID(), new AddBooksToReadingListRequest(Collections.emptySet())));
-  }
-
-  @Test
-  void addBooksToReadingList_whenBookNotFound() {
-    final ReadingList readingList = createReadingList(readingListName, Collections.emptySet());
-    final Book book = createBook("title", "author");
-    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.of(readingList));
-    when(readingListRepositoryMock.save(any())).thenAnswer(returnsFirstArg());
-    when(bookRepositoryMock.findAllById(any())).thenReturn(Collections.singletonList(book));
-    final ReadingList expectedReadingList =
-        createReadingList(readingListName, Collections.singleton(book));
-
-    final ResponseEntity<ReadingListDto> result =
-        controller.addBooksToReadingList(
-            UUID.randomUUID(),
-            new AddBooksToReadingListRequest(
-                new HashSet<>(Arrays.asList(UUID.randomUUID(), UUID.randomUUID()))));
-
-    assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
-  }
-
 
 }
