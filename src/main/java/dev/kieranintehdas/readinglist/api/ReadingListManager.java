@@ -59,7 +59,6 @@ public class ReadingListManager {
             .collect(Collectors.toSet());
 
     readingListToModify.getBooks().addAll(existingBooksToAdd);
-    readingListToModify.getBooks().addAll(addBooksToReadingListRequest.getBooks());
 
     return readingListRepository.save(readingListToModify);
   }
