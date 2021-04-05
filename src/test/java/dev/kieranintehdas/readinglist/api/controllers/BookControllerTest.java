@@ -1,24 +1,22 @@
-package dev.kieranintehdas.readinglist;
+package dev.kieranintehdas.readinglist.api.controllers;
 
-import dev.kieranintehdas.readinglist.api.controllers.BookController;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+
 import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
 import dev.kieranintehdas.readinglist.api.responses.BookDto;
 import dev.kieranintehdas.readinglist.storage.Book;
 import dev.kieranintehdas.readinglist.storage.BookRepository;
+import java.util.Collections;
+import java.util.Optional;
+import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
-
-import java.util.Collections;
-import java.util.Optional;
-import java.util.UUID;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class BookControllerTest {
@@ -78,7 +76,7 @@ public class BookControllerTest {
 
         final ResponseEntity<BookDto> result = bookController.getBookById(id);
 
-        assertEquals(ResponseEntity.ok(book), result);
+        assertEquals(ResponseEntity.ok(book.constructDto()), result);
     }
 
     @Test
