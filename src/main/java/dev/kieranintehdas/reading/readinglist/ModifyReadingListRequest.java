@@ -1,12 +1,14 @@
-package dev.kieranintehdas.readinglist.api.requests;
+package dev.kieranintehdas.reading.readinglist;
 
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import lombok.Builder;
 import lombok.Value;
 
+@Builder
 @Value
 public class ModifyReadingListRequest {
 

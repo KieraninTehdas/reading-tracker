@@ -1,6 +1,6 @@
-package dev.kieranintehdas.readinglist.storage;
+package dev.kieranintehdas.reading.readinglist;
 
-import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
+import dev.kieranintehdas.reading.book.Book;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.stream.Collectors;

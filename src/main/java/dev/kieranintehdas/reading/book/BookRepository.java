@@ -1,4 +1,4 @@
-package dev.kieranintehdas.readinglist.storage;
+package dev.kieranintehdas.reading.book;
 
 import org.springframework.data.repository.CrudRepository;
 

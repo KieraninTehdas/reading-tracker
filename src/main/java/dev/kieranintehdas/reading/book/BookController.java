@@ -1,9 +1,5 @@
-package dev.kieranintehdas.readinglist.api.controllers;
+package dev.kieranintehdas.reading.book;
 
-import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
-import dev.kieranintehdas.readinglist.api.responses.BookDto;
-import dev.kieranintehdas.readinglist.storage.Book;
-import dev.kieranintehdas.readinglist.storage.BookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

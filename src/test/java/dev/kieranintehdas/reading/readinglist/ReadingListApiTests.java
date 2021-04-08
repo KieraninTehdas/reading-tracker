@@ -1,21 +1,13 @@
-package dev.kieranintehdas.readinglist.api.controllers;
+package dev.kieranintehdas.reading.readinglist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyIterable;
 import static org.mockito.Mockito.when;
 
-import dev.kieranintehdas.readinglist.api.NotFoundException;
-import dev.kieranintehdas.readinglist.api.ReadingListManager;
-import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
-import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
-import dev.kieranintehdas.readinglist.storage.Book;
-import dev.kieranintehdas.readinglist.storage.BookRepository;
-import dev.kieranintehdas.readinglist.storage.ReadingList;
-import dev.kieranintehdas.readinglist.storage.ReadingListRepository;
-import java.util.Arrays;
+import dev.kieranintehdas.reading.book.Book;
+import dev.kieranintehdas.reading.book.BookRepository;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
@@ -29,7 +21,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-class ReadingListEndpointsTest {
+class ReadingListApiTests {
 
   private final String readingListName = "My Reading List";
   private final ReadingList readingList =
@@ -83,8 +75,21 @@ class ReadingListEndpointsTest {
   }
 
   @Test
-  void modifyReadingList() {
-    
-  }
+  void modifyReadingList_whenAddingBooks() {
+    final Book book = createBook("Some Title", "Some Author");
+    final ReadingList initialReadingList = createReadingList(Collections.emptySet());
+    final ReadingList expectedReadingList = createReadingList(Collections.singleton(book));
+    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.of(initialReadingList));
+    when(bookRepositoryMock.findAllById(anyIterable())).thenReturn(Collections.singletonList(book));
+    when(readingListRepositoryMock.save(any())).thenAnswer(returnsFirstArg());
 
+    final ResponseEntity<ReadingListDto> result =
+        controller.modifyReadingList(
+            UUID.randomUUID(),
+            ModifyReadingListRequest.builder()
+                .idsOfBooksToAdd(Collections.singleton(UUID.randomUUID()))
+                .build());
+
+    assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
+  }
 }

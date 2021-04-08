@@ -1,6 +1,6 @@
-package dev.kieranintehdas.readinglist.storage;
+package dev.kieranintehdas.reading.book;
 
-import dev.kieranintehdas.readinglist.api.responses.BookDto;
+import dev.kieranintehdas.reading.readinglist.ReadingList;
 import lombok.*;
 
 import javax.persistence.*;

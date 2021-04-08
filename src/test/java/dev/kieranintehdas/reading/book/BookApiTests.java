@@ -1,13 +1,9 @@
-package dev.kieranintehdas.readinglist.api.controllers;
+package dev.kieranintehdas.reading.book;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
-import dev.kieranintehdas.readinglist.api.requests.CreateBookRequest;
-import dev.kieranintehdas.readinglist.api.responses.BookDto;
-import dev.kieranintehdas.readinglist.storage.Book;
-import dev.kieranintehdas.readinglist.storage.BookRepository;
 import java.util.Collections;
 import java.util.Optional;
 import java.util.UUID;
@@ -19,7 +15,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.http.ResponseEntity;
 
 @ExtendWith(MockitoExtension.class)
-public class BookControllerTest {
+public class BookApiTests {
 
     private BookController bookController;
     @Mock

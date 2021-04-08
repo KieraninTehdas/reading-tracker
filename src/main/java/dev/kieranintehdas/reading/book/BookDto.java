@@ -1,6 +1,6 @@
-package dev.kieranintehdas.readinglist.api.responses;
+package dev.kieranintehdas.reading.book;
 
-import dev.kieranintehdas.readinglist.storage.ReadingList;
+import dev.kieranintehdas.reading.readinglist.ReadingList;
 import lombok.Builder;
 import lombok.NonNull;
 import lombok.Value;

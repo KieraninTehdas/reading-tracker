@@ -1,9 +1,5 @@
-package dev.kieranintehdas.readinglist.api.controllers;
+package dev.kieranintehdas.reading.readinglist;
 
-import dev.kieranintehdas.readinglist.api.ReadingListManager;
-import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
-import dev.kieranintehdas.readinglist.api.responses.ReadingListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

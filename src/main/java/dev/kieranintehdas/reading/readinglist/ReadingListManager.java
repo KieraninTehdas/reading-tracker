@@ -1,11 +1,8 @@
-package dev.kieranintehdas.readinglist.api;
+package dev.kieranintehdas.reading.readinglist;
 
-import dev.kieranintehdas.readinglist.api.requests.CreateReadingListRequest;
-import dev.kieranintehdas.readinglist.api.requests.ModifyReadingListRequest;
-import dev.kieranintehdas.readinglist.storage.Book;
-import dev.kieranintehdas.readinglist.storage.BookRepository;
-import dev.kieranintehdas.readinglist.storage.ReadingList;
-import dev.kieranintehdas.readinglist.storage.ReadingListRepository;
+import dev.kieranintehdas.reading.NotFoundException;
+import dev.kieranintehdas.reading.book.Book;
+import dev.kieranintehdas.reading.book.BookRepository;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;

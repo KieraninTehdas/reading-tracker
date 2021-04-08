@@ -1,4 +1,4 @@
-package dev.kieranintehdas.readinglist;
+package dev.kieranintehdas.reading;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
