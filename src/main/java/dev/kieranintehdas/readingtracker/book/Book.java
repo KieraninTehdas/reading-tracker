@@ -1,14 +1,22 @@
-package dev.kieranintehdas.reading.book;
+package dev.kieranintehdas.readingtracker.book;
 
-import dev.kieranintehdas.reading.readinglist.ReadingList;
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
+import dev.kieranintehdas.readingtracker.readinglist.ReadingList;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Table(name = "books")

@@ -1,15 +1,27 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
-import dev.kieranintehdas.reading.book.Book;
+import dev.kieranintehdas.readingtracker.book.Book;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.stream.Collectors;
-import lombok.*;
-
-import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import java.util.Set;
 import java.util.UUID;
+import java.util.stream.Collectors;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
+import lombok.NonNull;
+import lombok.ToString;
 
 @Entity
 @Table(name = "reading_lists")
@@ -44,9 +56,10 @@ public class ReadingList {
 
   public ReadingList removeBooksFromReadingList(Collection<UUID> idsOfBooksToRemove) {
     final Set<UUID> uniqueBookIdsToRemove = new HashSet<>(idsOfBooksToRemove);
-    final Set<Book> booksToRemove = books.stream()
-        .filter(book -> uniqueBookIdsToRemove.contains(book.getId()))
-        .collect(Collectors.toSet());
+    final Set<Book> booksToRemove =
+        books.stream()
+            .filter(book -> uniqueBookIdsToRemove.contains(book.getId()))
+            .collect(Collectors.toSet());
     books.removeAll(booksToRemove);
     return this;
   }

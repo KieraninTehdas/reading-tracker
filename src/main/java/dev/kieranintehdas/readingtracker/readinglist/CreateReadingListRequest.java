@@ -1,12 +1,11 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
-import lombok.Value;
-
-import javax.validation.constraints.NotBlank;
 import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
+import javax.validation.constraints.NotBlank;
+import lombok.Value;
 
 @Value
 public class CreateReadingListRequest {

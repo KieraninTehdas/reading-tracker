@@ -1,4 +1,4 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
@@ -7,8 +7,8 @@ import static org.mockito.ArgumentMatchers.anyIterable;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-import dev.kieranintehdas.reading.book.Book;
-import dev.kieranintehdas.reading.book.BookRepository;
+import dev.kieranintehdas.readingtracker.book.Book;
+import dev.kieranintehdas.readingtracker.book.BookRepository;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

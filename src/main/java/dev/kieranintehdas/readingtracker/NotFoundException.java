@@ -1,4 +1,4 @@
-package dev.kieranintehdas.reading;
+package dev.kieranintehdas.readingtracker;
 
 import lombok.Getter;
 

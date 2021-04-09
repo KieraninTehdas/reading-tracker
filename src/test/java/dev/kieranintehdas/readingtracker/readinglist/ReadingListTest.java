@@ -1,8 +1,8 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import dev.kieranintehdas.reading.book.Book;
+import dev.kieranintehdas.readingtracker.book.Book;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;

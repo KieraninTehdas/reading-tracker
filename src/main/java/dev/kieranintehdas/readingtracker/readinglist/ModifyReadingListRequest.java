@@ -1,4 +1,4 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
 import java.util.Collection;
 import java.util.HashSet;

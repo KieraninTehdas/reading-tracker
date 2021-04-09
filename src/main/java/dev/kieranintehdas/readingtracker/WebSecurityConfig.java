@@ -1,4 +1,4 @@
-package dev.kieranintehdas.reading;
+package dev.kieranintehdas.readingtracker;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

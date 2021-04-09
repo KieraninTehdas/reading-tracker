@@ -1,12 +1,11 @@
-package dev.kieranintehdas.reading.readinglist;
+package dev.kieranintehdas.readingtracker.readinglist;
 
-import dev.kieranintehdas.reading.book.Book;
-import lombok.Builder;
-import lombok.Value;
-
+import dev.kieranintehdas.readingtracker.book.Book;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
+import lombok.Builder;
+import lombok.Value;
 
 @Value
 public class ReadingListDto {

@@ -1,4 +1,4 @@
-package dev.kieranintehdas.reading.book;
+package dev.kieranintehdas.readingtracker.book;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
