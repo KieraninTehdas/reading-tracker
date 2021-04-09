@@ -30,7 +30,8 @@ public class ReadingList {
       name = "reading_list_books",
       joinColumns = {@JoinColumn(name = "reading_list_id")},
       inverseJoinColumns = {@JoinColumn(name = "book_id")})
-  private Set<Book> books;
+  @Builder.Default
+  private Set<Book> books = new HashSet<>();
 
   public ReadingListDto constructDto() {
     return new ReadingListDto(id, name, books);

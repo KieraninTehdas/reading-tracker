@@ -4,14 +4,17 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.AdditionalAnswers.returnsFirstArg;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyIterable;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import dev.kieranintehdas.reading.book.Book;
 import dev.kieranintehdas.reading.book.BookRepository;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -38,11 +41,15 @@ class ReadingListApiTests {
   }
 
   private Book createBook(String title, String author) {
-    return Book.builder().title(title).author(author).build();
+    return Book.builder().id(UUID.randomUUID()).title(title).author(author).build();
   }
 
   private ReadingList createReadingList(Collection<Book> books) {
     return ReadingList.builder().name("My Reading List").books(new HashSet<>(books)).build();
+  }
+
+  private <T> Set<T> collectionToSet(final Collection<T> collection) {
+    return new HashSet<>(collection);
   }
 
   @Test
@@ -91,5 +98,55 @@ class ReadingListApiTests {
                 .build());
 
     assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
+  }
+
+  @Test
+  void modifyReadingList_whenRemovingBooks() {
+    final Book bookToRemove = createBook("Some Title", "Some Author");
+    final ReadingList initialReadingList = createReadingList(Collections.singleton(bookToRemove));
+    final ReadingList expectedReadingList = createReadingList(Collections.emptySet());
+    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.of(initialReadingList));
+    when(readingListRepositoryMock.save(any())).thenAnswer(returnsFirstArg());
+
+    final ResponseEntity<ReadingListDto> result =
+        controller.modifyReadingList(
+            UUID.randomUUID(),
+            ModifyReadingListRequest.builder()
+                .idsOfBooksToRemove(Collections.singleton(bookToRemove.getId()))
+                .build());
+
+    assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
+  }
+
+  @Test
+  void modifyReadingList_whenAddingAndRemovingBooks() {
+    final Book bookToRemove = createBook("I get removed", "I do");
+    final Book unchangedBook = createBook("I don't change", "I don't");
+    final Book bookToAdd = createBook("I got added", "I did");
+    final Book nonExistentBook = createBook("I", "Don't Exist");
+    final ReadingList initialReadingList =
+        createReadingList(Arrays.asList(bookToRemove, unchangedBook));
+    final ReadingList expectedReadingList =
+        createReadingList(Arrays.asList(unchangedBook, bookToAdd));
+    when(readingListRepositoryMock.findById(any())).thenReturn(Optional.of(initialReadingList));
+    when(readingListRepositoryMock.save(any())).thenAnswer(returnsFirstArg());
+    when(bookRepositoryMock.findAllById(anyIterable()))
+        .thenReturn(Collections.singletonList(bookToAdd));
+
+    final ResponseEntity<ReadingListDto> result =
+        controller.modifyReadingList(
+            UUID.randomUUID(),
+            ModifyReadingListRequest.builder()
+                .idsOfBooksToRemove(
+                    collectionToSet(Arrays.asList(bookToRemove.getId(), unchangedBook.getId())))
+                .idsOfBooksToAdd(
+                    collectionToSet(
+                        Arrays.asList(
+                            unchangedBook.getId(), bookToAdd.getId(), nonExistentBook.getId())))
+                .build());
+
+    assertEquals(ResponseEntity.ok(expectedReadingList.constructDto()), result);
+    verify(bookRepositoryMock)
+        .findAllById(collectionToSet(Arrays.asList(bookToAdd.getId(), nonExistentBook.getId())));
   }
 }

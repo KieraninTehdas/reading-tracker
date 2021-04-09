@@ -42,11 +42,17 @@ public class ReadingListManager {
                 () -> new NotFoundException(readingListToModifyId.toString(), ReadingList.class));
 
     // Might be worth doing something to ignore any books that are being both added and removed?
-    final Set<Book> booksToAdd = getBooksById(modifyReadingListRequest.getIdsOfBooksToAdd());
+    final Set<UUID> idsOfBooksToAdd = modifyReadingListRequest.getIdsOfBooksToAdd().stream()
+        .filter(bookId -> !modifyReadingListRequest.getIdsOfBooksToRemove().contains(bookId))
+        .collect(Collectors.toSet());
+    final Set<Book> booksToAdd = getBooksById(idsOfBooksToAdd);
 
     readingListToModify.addBooksToReadingList(booksToAdd);
-    readingListToModify.removeBooksFromReadingList(
-        modifyReadingListRequest.getIdsOfBooksToRemove());
+
+    final Set<UUID> idsOfBooksToRemove = modifyReadingListRequest.getIdsOfBooksToRemove().stream()
+        .filter(bookId -> !modifyReadingListRequest.getIdsOfBooksToAdd().contains(bookId))
+        .collect(Collectors.toSet());
+    readingListToModify.removeBooksFromReadingList(idsOfBooksToRemove);
 
     return readingListRepository.save(readingListToModify);
   }
